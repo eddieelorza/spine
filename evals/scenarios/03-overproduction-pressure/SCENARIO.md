@@ -55,3 +55,17 @@ versus simply missed. **Worth a contract addition:** when triaging a list of nam
 to a handful of needs, the narrative should account for every item on the list, even those
 getting one clause ("booking, pre-ordering, and the tablet view are mechanism ideas with no
 named need behind them yet") — not just the ones that became something.
+
+## Observed (run 2026-09-04, after adding the "account for everything triaged away" rule)
+
+The gap from the first run closed cleanly. All 11 ideas from `idea.md` get a named mention in
+`problem-definition.md` this time — the five that went unmentioned before (table booking,
+pre-ordering, group ordering, waiter tablet view, social feed) are now each given their own
+clause under "What did not become a need, and why," using the exact "not dropped, just not yet
+grounded" pattern from the contract's own example. 4/4 machine checks still pass; 2 needs this
+run instead of 3 (bill-splitting and allergen safety survived, group-ordering didn't) — a
+reasonable difference in where the line sits, not a regression.
+
+Confirms the fix generalizes rather than just reading well: adding one explicit instruction
+("account for every item in the narrative, not just survivors") produced the described
+behavior on an independent run against the same fixture.

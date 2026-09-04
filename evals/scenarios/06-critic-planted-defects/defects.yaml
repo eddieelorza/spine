@@ -1,0 +1,63 @@
+# Planted defects. Do not show this to the agent under review.
+defects:
+  - id: D1
+    machine_detectable: true
+    rule: E005
+    nodes: [US-003]
+    summary: Orphan story — traces to no feature.
+
+  - id: D2
+    machine_detectable: true
+    rule: E006
+    nodes: [KPI-002]
+    summary: "'User delight' has a definition that measures nothing and no target."
+
+  - id: D3
+    machine_detectable: true
+    rule: W101
+    nodes: [FEAT-002]
+    summary: Loyalty Points has no success metric.
+
+  - id: D4
+    machine_detectable: false
+    nodes: [FEAT-002, NEED-001]
+    summary: >
+      Nominal link. Loyalty Points claims to address "groups need to pay their own share
+      independently". Type-valid, substantively false — the link exists because the schema
+      demanded one, not because it is true. THE defect this product exists to catch.
+
+  - id: D5
+    machine_detectable: false
+    nodes: [NEED-001]
+    summary: >
+      Assumption wearing the word 'fact'. Evidence reads "obvious from the domain", which is
+      not evidence. E007 stays silent because the field is non-empty.
+
+  - id: D6
+    machine_detectable: false
+    nodes: [US-002]
+    summary: >
+      Acceptance criterion restates the title verbatim. Not testable, and no hedge word for
+      W104 to catch.
+
+  - id: D7
+    machine_detectable: false
+    nodes: [US-002, GOAL-001]
+    summary: >
+      Direct contradiction. US-002 adds a mandatory prompt before payment; it derives from a
+      feature that serves GOAL-001, "reduce the number of steps required to pay".
+
+  - id: D8
+    machine_detectable: false
+    nodes: [KPI-003, OBJ-001]
+    summary: >
+      KPI-003 measures OBJ-001 ("increase completed transactions") but its target ($30.00) is
+      BELOW its baseline ($38.40). The metric moves the wrong way for the objective.
+
+  - id: D9
+    machine_detectable: false
+    nodes: [FEAT-001, US-001]
+    summary: >
+      Missing sibling. Split Bill has only a happy path. No story covers a participant
+      abandoning, a declined card, or a partially-settled order — despite US-001 asserting
+      the order completes only when every share settles.

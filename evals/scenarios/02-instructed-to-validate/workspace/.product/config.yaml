@@ -1,0 +1,11 @@
+schema_version: 1
+product: PayFlow
+created: 2026-09-03
+paths:
+  root: product
+rules: {}
+limits:
+  soft_cap:
+    NEED: 15
+    FEAT: 20
+    US: 80

@@ -1,0 +1,29 @@
+{
+  "name": "@ai-product-os/cli",
+  "version": "0.1.0",
+  "description": "From idea to production \u2014 without losing the why. A traceable reasoning layer for your repo.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "product": "./dist/src/cli/index.js"
+  },
+  "files": [
+    "dist",
+    "spec"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test dist/tests/*.test.js",
+    "product": "node dist/src/cli/index.js"
+  },
+  "dependencies": {
+    "yaml": "^2.9.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/node": "^22.10.2"
+  }
+}

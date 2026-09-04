@@ -1,0 +1,94 @@
+# Normative rule set. Implementations register against these IDs in src/core/rules.ts.
+# A contract test asserts every rule here has an implementation AND a fixture that triggers it.
+schema_version: 1
+
+rules:
+  - id: E001
+    name: dangling-reference
+    severity: error
+    description: A link points at an ID that does not exist in the workspace.
+    rationale: A citation to nothing is worse than no citation — it looks like reasoning and isn't.
+
+  - id: E002
+    name: duplicate-id
+    severity: error
+    description: The same ID is defined in more than one file.
+    rationale: IDs are the addressing scheme. A duplicate silently corrupts every query.
+
+  - id: E003
+    name: invalid-edge-type
+    severity: error
+    description: An edge is not permitted between these two kinds by the edge matrix.
+    rationale: Untyped links degrade into "related to", which carries no reasoning.
+
+  - id: E004
+    name: cycle
+    severity: error
+    description: A cycle exists among serves / addresses / derives_from / depends_on / supersedes.
+    rationale: Reasoning that justifies itself in a loop is not reasoning.
+
+  - id: E005
+    name: orphan
+    severity: error
+    description: A non-root node has no upstream link.
+    rationale: THE traceability rule. Work that traces to no intent is the failure this product exists to prevent.
+
+  - id: E006
+    name: kpi-not-measurable
+    severity: error
+    description: A KPI is missing a definition or a target.
+    rationale: An unmeasurable KPI cannot validate anything; it only looks like rigour.
+
+  - id: E007
+    name: fact-without-evidence
+    severity: error
+    description: A node claims epistemic status 'fact' but records no evidence.
+    rationale: The anti-slop rule. Facts require evidence; everything else is a hypothesis.
+
+  - id: E008
+    name: malformed-node
+    severity: error
+    description: A file could not be parsed or failed schema validation.
+    rationale: Unreadable structure means the graph is silently incomplete.
+
+  - id: W101
+    name: feature-without-metric
+    severity: warn
+    description: A feature has no measured_by link.
+    rationale: A feature with no success metric can never be shown to have worked.
+
+  - id: W102
+    name: unvalidated-foundation
+    severity: warn
+    description: A need at hypothesis/assumption status has 5 or more descendants.
+    rationale: Substantial work resting on unvalidated ground — the most valuable warning in the set.
+
+  - id: W103
+    name: intent-without-work
+    severity: warn
+    description: An objective or goal has no descendants.
+    rationale: Stated intent nobody is working on is either dead or a gap.
+
+  - id: W104
+    name: weak-acceptance-criteria
+    severity: warn
+    description: A story has no acceptance criteria, or criteria containing hedge language.
+    rationale: Crude keyword check only. Real ambiguity detection is the critic's job.
+
+  - id: W105
+    name: stale-draft
+    severity: warn
+    description: A node has been at status 'draft' for more than 14 days.
+    rationale: Drafts that never get accepted mean the graph is decorative.
+
+  - id: W106
+    name: link-to-retired-node
+    severity: warn
+    description: A link points at a superseded or dropped node.
+    rationale: Reasoning that depends on retired reasoning has quietly gone stale.
+
+  - id: W107
+    name: soft-cap-exceeded
+    severity: warn
+    description: A kind has more nodes than the workspace's configured soft cap.
+    rationale: Over-generation turns the differentiator into noise (Phase 1 P9).

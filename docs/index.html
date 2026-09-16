@@ -1,0 +1,741 @@
+<title>AI Product OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #17140F;
+    --bg-raised: #1D1912;
+    --ink: #F3EEE2;
+    --dim: #9C9384;
+    --line: #34301F;
+    --amber: #E8A33D;
+    --amber-wash: rgba(232,163,61,0.12);
+    --red: #E0644F;
+    --red-wash: rgba(224,100,79,0.12);
+    --green: #7DAE7F;
+  }
+
+  * { box-sizing: border-box; }
+  ::selection { background: var(--amber-wash); color: var(--ink); }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--ink); }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  code, .mono { font-family: "JetBrains Mono", monospace; }
+
+  /* ---------- hero ---------- */
+
+  .hero { padding: 88px 0 56px; }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin: 0 0 22px;
+  }
+
+  h1 {
+    font-family: "Fraunces", Georgia, serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: clamp(38px, 6.4vw, 60px);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    margin: 0 0 22px;
+    text-wrap: balance;
+    max-width: 15ch;
+  }
+
+  h1 em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--amber);
+  }
+
+  .lede {
+    font-size: 15px;
+    color: var(--dim);
+    line-height: 1.75;
+    max-width: 58ch;
+    margin: 0 0 32px;
+  }
+
+  .lede b { color: var(--ink); font-weight: 600; }
+
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+
+  .btn {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 11px 18px;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn.primary { background: var(--amber); border-color: var(--amber); color: #1B1508; }
+  .btn:hover { border-color: var(--amber); }
+  .btn.primary:hover { filter: brightness(1.08); }
+
+  /* ---------- terminal panel ---------- */
+
+  .term {
+    margin-top: 40px;
+    border: 1px solid var(--line);
+    background: var(--bg-raised);
+  }
+
+  .term .bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.04em;
+  }
+
+  .term .bar .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+
+  .term pre {
+    margin: 0;
+    padding: 18px 20px 20px;
+    font-size: 12.5px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-x: auto;
+  }
+
+  .term .prompt { color: var(--dim); }
+  .term .accepted { color: var(--dim); }
+  .term .hyp { color: var(--amber); }
+  .term .warn { color: var(--amber); font-weight: 700; }
+  .term .id { color: var(--ink); font-weight: 600; }
+
+  /* ---------- sections ---------- */
+
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+
+  .kicker {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin: 0 0 12px;
+  }
+
+  h2 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(26px, 4vw, 34px);
+    line-height: 1.12;
+    margin: 0 0 16px;
+    text-wrap: balance;
+    max-width: 22ch;
+  }
+
+  .section-lede {
+    font-size: 14px;
+    color: var(--dim);
+    line-height: 1.75;
+    max-width: 60ch;
+    margin: 0 0 32px;
+  }
+
+  .section-lede b { color: var(--ink); font-weight: 600; }
+  .section-lede code { font-size: 12.5px; background: var(--bg-raised); padding: 1px 5px; border: 1px solid var(--line); }
+
+  /* ---------- spine diagram ---------- */
+
+  .diagram-frame { overflow-x: auto; margin: 8px 0 6px; }
+  figure.spine { margin: 0; max-width: 440px; }
+  figure.spine svg { width: 100%; height: auto; display: block; }
+  figure.spine figcaption {
+    font-size: 11.5px;
+    color: var(--dim);
+    margin-top: 14px;
+    line-height: 1.65;
+    max-width: 60ch;
+  }
+  .sp-node { font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: 13px; }
+  .sp-gloss { font-family: "JetBrains Mono", monospace; font-weight: 400; font-size: 10.5px; }
+  .sp-edge { font-family: "JetBrains Mono", monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.03em; }
+
+  /* ---------- numbered steps ---------- */
+
+  .steps { display: flex; flex-direction: column; }
+
+  .step {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 18px;
+    padding: 22px 0;
+    border-top: 1px solid var(--line);
+  }
+  .steps .step:last-child { border-bottom: 1px solid var(--line); }
+
+  .step .n {
+    font-family: "Fraunces", serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--amber);
+    line-height: 1.4;
+  }
+
+  .step h3 {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+
+  .step p { font-size: 13px; color: var(--dim); line-height: 1.7; margin: 0 0 12px; max-width: 56ch; }
+  .step p code { color: var(--ink); }
+
+  .step pre.cmd {
+    margin: 0;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--amber);
+    padding: 12px 16px;
+    font-size: 12.5px;
+    line-height: 1.7;
+    overflow-x: auto;
+    color: var(--ink);
+  }
+
+  .step pre.cmd .c { color: var(--dim); }
+
+  .prereq {
+    border: 1px solid var(--amber);
+    background: var(--amber-wash);
+    padding: 18px 20px;
+    margin-bottom: 8px;
+  }
+  .prereq h4 {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+    color: var(--amber);
+  }
+  .prereq ul { margin: 0 0 14px; padding-left: 18px; }
+  .prereq li { font-size: 13px; color: var(--ink); line-height: 1.7; }
+  .prereq .note { font-size: 12.5px; color: var(--dim); line-height: 1.7; margin: 0; }
+  .prereq .note b { color: var(--ink); }
+
+  .example {
+    margin-top: 12px;
+    border: 1px solid var(--line);
+    background: var(--bg-raised);
+  }
+  .example .lbl {
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--dim);
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .example pre {
+    margin: 0;
+    padding: 14px 16px 16px;
+    font-size: 12px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    color: var(--ink);
+  }
+  .example .hyp { color: var(--amber); }
+  .example .dim { color: var(--dim); }
+  .example .q { color: var(--dim); font-style: italic; }
+
+  .running-example {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0 0 28px;
+  }
+  .running-example b { color: var(--amber); font-weight: 700; }
+
+  /* ---------- agent grid ---------- */
+
+  .agents { display: flex; flex-direction: column; }
+
+  .agent-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 100px;
+    gap: 16px;
+    align-items: start;
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+  }
+  .agents .agent-row:last-child { border-bottom: 1px solid var(--line); }
+
+  .agent-row .name { font-weight: 700; font-size: 13px; color: var(--ink); }
+  .agent-row .writes { font-size: 11px; color: var(--dim); margin-top: 4px; }
+  .agent-row .desc { font-size: 13px; color: var(--dim); line-height: 1.65; }
+  .agent-row .count { text-align: right; font-size: 11px; color: var(--dim); line-height: 1.6; }
+  .agent-row .count b { color: var(--amber); font-size: 15px; display: block; font-weight: 700; }
+
+  /* ---------- refusal proof ---------- */
+
+  .proof {
+    border: 1px solid var(--red);
+    background: var(--red-wash);
+    padding: 16px 18px;
+    margin-top: 28px;
+  }
+  .proof pre { margin: 0; font-size: 12.5px; line-height: 1.75; white-space: pre-wrap; }
+  .proof .c { color: var(--dim); }
+  .proof .r { color: var(--red); font-weight: 600; }
+
+  /* ---------- honesty list ---------- */
+
+  .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+  .facts .col h4 {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+  .facts ul { list-style: none; margin: 0; padding: 0; }
+  .facts li {
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+    color: var(--dim);
+  }
+  .facts .col:first-child li::before { content: "✓ "; color: var(--green); }
+  .facts .col:last-child li::before { content: "✕ "; color: var(--red); }
+  .facts li b { color: var(--ink); font-weight: 600; }
+
+  @media (max-width: 560px) {
+    .facts { grid-template-columns: 1fr; gap: 32px 0; }
+    .agent-row { grid-template-columns: 1fr; gap: 6px; }
+    .agent-row .count { text-align: left; }
+    .step { grid-template-columns: 28px 1fr; }
+  }
+
+  footer {
+    padding: 48px 0 88px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--dim);
+    line-height: 1.9;
+  }
+  footer code { background: var(--bg-raised); padding: 1px 5px; border: 1px solid var(--line); }
+  footer .fine { margin-top: 18px; color: #6E675A; }
+</style>
+
+<div class="wrap">
+
+  <div class="hero">
+    <p class="eyebrow">Traceability layer &middot; open source</p>
+    <h1>De la idea a producción, <em>sin perder el porqué</em></h1>
+    <p class="lede">
+      <b>AI Product OS</b> no genera PRDs. Convierte cada objetivo, necesidad, feature,
+      historia y tarea en un nodo con ID, enlazado a los nodos de los que depende &mdash;
+      para que <code style="font-size:13px">product why US-014</code> te diga en un segundo
+      por qué existe algo, y si esa razón todavía descansa en un supuesto sin validar.
+    </p>
+    <div class="cta-row">
+      <a class="btn primary" href="#instalar">Instalar &rarr;</a>
+      <a class="btn" href="#agentes">Ver los 4 agentes</a>
+    </div>
+
+    <div class="term">
+      <div class="bar"><span class="dot"></span> product why TASK-001 &middot; salida real, sin editar</div>
+      <pre><span class="prompt">TASK-001</span>  Implement per-participant payment intents  [accepted]
+└─ derives_from <span class="id">US-001</span>  Allow customers to split payment  [accepted]
+   └─ derives_from <span class="id">FEAT-001</span>  Split Bill  [accepted]
+      ├─ addresses <span class="id">NEED-001</span>  Groups need independent payment methods  <span class="hyp">[hypothesis]</span>
+      └─ serves <span class="id">GOAL-001</span>  Reduce payment friction  [accepted]
+         └─ serves <span class="id">OBJ-001</span>  Increase completed restaurant transactions  [accepted]
+
+   measured by <span class="id">KPI-001</span>  Checkout completion rate
+
+<span class="warn">!</span>  This chain rests on 1 unvalidated node:
+     NEED-001  hypothesis, no evidence recorded
+   Run  product node show NEED-001  to see it.</pre>
+    </div>
+  </div>
+
+  <section>
+    <p class="kicker">Qué hace de verdad</p>
+    <h2>Un grafo, no un generador de documentos</h2>
+    <p class="section-lede">
+      Cada afirmación de producto es un archivo Markdown con YAML: un ID permanente
+      (<code>OBJ-001</code>, <code>NEED-003</code>, <code>US-014</code>), un tipo de
+      afirmación (<code>fact</code> / <code>hypothesis</code> / <code>assumption</code> /
+      <code>decision</code>), y enlaces tipados hacia lo que justifica que exista. La espina
+      canónica &mdash; la que <code>product why</code> recorre &mdash; es siempre la misma:
+    </p>
+
+    <div class="diagram-frame">
+      <figure class="spine">
+        <svg viewBox="0 0 440 460" role="img" aria-label="TASK deriva de US, que deriva de FEAT. FEAT sirve a GOAL y atiende a NEED. GOAL sirve a OBJ. OBJ se mide por KPI.">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor"></path>
+            </marker>
+          </defs>
+
+          <!-- OBJ -> KPI (measured_by), rama lateral -->
+          <text x="120" y="45" text-anchor="middle" class="sp-node" fill="#F3EEE2">OBJ</text>
+          <text x="120" y="61" text-anchor="middle" class="sp-gloss" fill="#9C9384">objetivo</text>
+          <line x1="178" y1="40" x2="330" y2="40" stroke="currentColor" stroke-width="1" marker-end="url(#ar)"></line>
+          <text x="254" y="30" text-anchor="middle" class="sp-edge" fill="#9C9384">measured_by</text>
+          <text x="385" y="45" text-anchor="middle" class="sp-node" fill="#F3EEE2">KPI</text>
+          <text x="385" y="61" text-anchor="middle" class="sp-gloss" fill="#9C9384">métrica</text>
+
+          <!-- GOAL -> OBJ (serves) -->
+          <line x1="120" y1="118" x2="120" y2="70" stroke="currentColor" stroke-width="1" marker-end="url(#ar)"></line>
+          <text x="142" y="98" class="sp-edge" fill="#9C9384">serves</text>
+          <text x="120" y="140" text-anchor="middle" class="sp-node" fill="#F3EEE2">GOAL</text>
+          <text x="120" y="156" text-anchor="middle" class="sp-gloss" fill="#9C9384">meta</text>
+
+          <!-- FEAT -> GOAL (serves), FEAT -> NEED (addresses) -->
+          <line x1="120" y1="198" x2="120" y2="150" stroke="currentColor" stroke-width="1" marker-end="url(#ar)"></line>
+          <text x="142" y="178" class="sp-edge" fill="#9C9384">serves</text>
+          <text x="120" y="220" text-anchor="middle" class="sp-node" fill="#E8A33D">FEAT</text>
+          <text x="120" y="236" text-anchor="middle" class="sp-gloss" fill="#9C9384">feature</text>
+
+          <line x1="178" y1="215" x2="330" y2="215" stroke="currentColor" stroke-width="1" marker-end="url(#ar)"></line>
+          <text x="254" y="205" text-anchor="middle" class="sp-edge" fill="#9C9384">addresses</text>
+          <text x="385" y="220" text-anchor="middle" class="sp-node" fill="#F3EEE2">NEED</text>
+          <text x="385" y="236" text-anchor="middle" class="sp-gloss" fill="#9C9384">necesidad</text>
+
+          <!-- US -> FEAT (derives_from) -->
+          <line x1="120" y1="298" x2="120" y2="250" stroke="currentColor" stroke-width="1" marker-end="url(#ar)"></line>
+          <text x="142" y="278" class="sp-edge" fill="#9C9384">derives_from</text>
+          <text x="120" y="320" text-anchor="middle" class="sp-node" fill="#F3EEE2">US</text>
+          <text x="120" y="336" text-anchor="middle" class="sp-gloss" fill="#9C9384">historia</text>
+
+          <!-- TASK -> US (derives_from) -->
+          <line x1="120" y1="398" x2="120" y2="350" stroke="currentColor" stroke-width="1" marker-end="url(#ar)"></line>
+          <text x="142" y="378" class="sp-edge" fill="#9C9384">derives_from</text>
+          <text x="120" y="420" text-anchor="middle" class="sp-node" fill="#F3EEE2">TASK</text>
+          <text x="120" y="436" text-anchor="middle" class="sp-gloss" fill="#9C9384">tarea técnica</text>
+        </svg>
+        <figcaption>
+          La espina que recorre <code style="font-size:11px">product why</code>, de abajo
+          hacia arriba &mdash; igual que el árbol del ejemplo de más arriba. Cualquier nodo
+          puede además colgar de un <code style="font-size:11px">ASSUM</code>,
+          <code style="font-size:11px">QUES</code>, <code style="font-size:11px">DEC</code>
+          o <code style="font-size:11px">RISK</code> &mdash; y eso es lo que aparece en el
+          pie de honestidad.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="instalar">
+    <p class="kicker">Cómo usarlo, de cero</p>
+    <h2>No necesitas saber programar ni tener un proyecto de código</h2>
+    <p class="section-lede">
+      &ldquo;Repo&rdquo; aquí no significa proyecto de software &mdash; significa
+      <b>una carpeta con control de versiones</b>. Si eres de producto y no tienes ningún
+      código, igual puedes tener una: se crea con un solo comando y queda vacía, solo con tu
+      idea adentro. Todo este recorrido usa el mismo ejemplo de principio a fin.
+    </p>
+
+    <div class="prereq">
+      <h4>Antes de empezar, necesitas tres cosas</h4>
+      <ul>
+        <li><b>Node.js 20 o más nuevo</b> instalado en tu máquina.</li>
+        <li><b>git</b> instalado (viene por defecto en Mac; en Windows, Git for Windows).</li>
+        <li><b>Claude Code</b> instalado y abierto &mdash; los <code>/product:*</code> solo
+        existen ahí, no en la app normal de Claude ni en claude.ai.</li>
+      </ul>
+      <p class="note">Si ya tienes Claude Code abierto y puedes escribir comandos en su
+      terminal, tienes todo lo que hace falta. No hace falta VS Code, no hace falta un
+      framework, no hace falta saber qué es un <code style="font-size:11px">git commit</code>.</p>
+    </div>
+
+    <p class="running-example">Ejemplo que corre en todos los pasos &middot; <b>SplitPay</b> &mdash; dividir la cuenta en grupo</p>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="n">0</div>
+        <div>
+          <h3>Instala Claude Code, si todavía no lo tienes</h3>
+          <p>Necesitas cuenta <b>Pro, Max, Team, Enterprise o Console</b> &mdash; el plan
+          gratis de claude.ai no incluye Claude Code. Elige tu sistema:</p>
+          <pre class="cmd"><span class="c"># macOS, Linux o WSL</span>
+curl -fsSL https://claude.ai/install.sh | bash
+
+<span class="c"># Windows, en PowerShell</span>
+irm https://claude.ai/install.ps1 | iex</pre>
+          <p style="margin-top:14px;">Después, en cualquier terminal:</p>
+          <pre class="cmd">claude   <span class="c"># abre una sesión y te pide iniciar sesión en el navegador</span></pre>
+          <p style="margin-top:14px;">Se abre tu navegador, inicias sesión con tu cuenta de Claude, y listo &mdash;
+          ya puedes escribir dentro de esa ventana de terminal.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">1</div>
+        <div>
+          <h3>Instala la herramienta &mdash; una sola vez, nunca más</h3>
+          <p>Esto no es tu producto. Es la herramienta en sí, y vive en su propia carpeta,
+          separada de todo lo demás que hagas.</p>
+          <pre class="cmd"><span class="c"># en cualquier carpeta, una sola vez</span>
+git clone &lt;url&gt; ai-product-os
+cd ai-product-os
+npm install
+npm run build
+npm link   <span class="c"># deja el comando "product" disponible en toda tu máquina</span></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">2</div>
+        <div>
+          <h3>Crea la carpeta de TU idea</h3>
+          <p>Esta es la parte que confunde: no reutilizas la carpeta de arriba. Creas una
+          nueva, vacía, para tu producto &mdash; sin importar que no tengas ni una línea de
+          código todavía.</p>
+          <pre class="cmd"><span class="c"># en cualquier otro lugar, por ejemplo tu carpeta de Documentos</span>
+mkdir splitpay
+cd splitpay
+git init                             <span class="c"># esta carpeta ya es tu "repo"</span>
+product init --name "SplitPay"       <span class="c"># crea .product/ y product/ adentro</span></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">3</div>
+        <div>
+          <h3>Escribe tu idea, en tus palabras</h3>
+          <p><code>product init</code> te dejó un archivo de plantilla en
+          <code>product/00-context/idea.md</code>. Lo abres con cualquier editor de texto y
+          escribes lo que ya sabes &mdash; sin estructura, sin jerga.</p>
+          <div class="example">
+            <div class="lbl">product/00-context/idea.md &middot; así se ve, ya lleno</div>
+            <pre># SplitPay
+
+## The idea
+Una app para que un grupo en un restaurante divida la cuenta y cada quien pague
+su parte, en vez de que una sola persona la cubra y luego cobre a los demás.
+
+## What you already know
+Nada formal. He visto a grupos de amigos discutir quién le debe a quién al
+salir a comer, varias veces.
+
+## What you are guessing
+<span class="hyp">Casi todo &mdash; esto se vuelve una hipótesis, no un hecho, y el sistema lo va a marcar así.</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">4</div>
+        <div>
+          <h3>Instala los 4 agentes en esta carpeta</h3>
+          <p>Un solo comando, una sola vez por carpeta de producto.</p>
+          <pre class="cmd">product agents build --install
+<span class="c"># escribe .claude/agents/ y .claude/commands/product/ aquí adentro</span></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">5</div>
+        <div>
+          <h3>Abre esta carpeta en Claude Code</h3>
+          <p>No la carpeta de la herramienta &mdash; la de tu idea (<code>splitpay/</code>).
+          A partir de aquí, todo lo que escribes son mensajes normales dentro de Claude Code.</p>
+          <pre class="cmd">cd splitpay
+claude   <span class="c"># o abre esta carpeta desde la app de Claude Code</span></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">6</div>
+        <div>
+          <h3><code>/product:discover</code> &mdash; el problema, no la solución</h3>
+          <p>Lee tu <code>idea.md</code>, te hace un par de preguntas cortas si hace falta, y
+          crea nodos &mdash; nunca inventa investigación que no le diste.</p>
+          <div class="example">
+            <div class="lbl">lo que ves en pantalla</div>
+            <pre><span class="q">¿Qué has observado tú mismo sobre esto? ¿Alguien más además de ti?</span>
+
+Creado <span class="hyp">NEED-001</span>  Groups need independent payment methods       <span class="hyp">[hypothesis]</span>
+Creado <span class="hyp">ASSUM-001</span> Groups currently abandon at the payment step  <span class="hyp">[assumption]</span>
+
+<span class="dim">Ninguno de los dos tiene evidencia todavía &mdash; no me diste ninguna.
+Acéptalos si son correctos, o corrígelos antes de seguir.</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">7</div>
+        <div>
+          <h3><code>/product:strategy</code> &mdash; objetivo, meta, métrica</h3>
+          <p>Se niega a correr si no aceptaste al menos un <code>NEED</code> antes. No inventa
+          una meta de negocio que tú no le diste.</p>
+          <div class="example">
+            <div class="lbl">lo que ves en pantalla</div>
+            <pre>Creado OBJ-001  Increase completed restaurant transactions
+Creado GOAL-001 Reduce payment friction              &mdash; serves OBJ-001
+Creado KPI-001  Checkout completion rate             &mdash; measures OBJ-001
+  <span class="dim">definition: completados / iniciados, semanal
+  target: 42% &rarr; 55%</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">8</div>
+        <div>
+          <h3><code>/product:stories</code> &mdash; feature + historia de usuario</h3>
+          <p>Cada historia sale con criterios de aceptación probables, y enlazada a la
+          necesidad y a la meta que la justifican.</p>
+          <div class="example">
+            <div class="lbl">lo que ves en pantalla</div>
+            <pre>Creado FEAT-001 Split Bill               &mdash; addresses NEED-001, serves GOAL-001
+Creado US-001   Allow customers to split payment  &mdash; derives_from FEAT-001
+  <span class="dim">- Cada participante paga su parte de forma independiente
+  - La orden se completa solo cuando todas las partes están pagadas</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">9</div>
+        <div>
+          <h3><code>/product:plan</code> &mdash; ya del lado técnico</h3>
+          <p>Esta parte normalmente la corre un ingeniero, o tú si construyes con un agente
+          de código. Convierte la historia en tareas concretas.</p>
+          <div class="example">
+            <div class="lbl">lo que ves en pantalla</div>
+            <pre>Creado TASK-001 Implement per-participant payment intents  &mdash; derives_from US-001</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">10</div>
+        <div>
+          <h3>Revisas, aceptas, y preguntas por qué</h3>
+          <p>Nada cuenta como real hasta que corres esto tú &mdash; ningún agente puede
+          hacerlo por ti. Y esto es exactamente lo que viste al principio de esta página.</p>
+          <pre class="cmd">product node accept NEED-001 OBJ-001 GOAL-001 FEAT-001 US-001
+product why TASK-001   <span class="c"># el panel del inicio de esta página, generado así</span></pre>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="agentes">
+    <p class="kicker">Los cuatro agentes</p>
+    <h2>Permisos por contrato, no por instrucción</h2>
+    <p class="section-lede">
+      Cada agente declara qué tipos de nodo puede crear. El CLI se lo hace cumplir &mdash;
+      no es una petición en el prompt, es un rechazo con código de salida.
+    </p>
+
+    <div class="agents">
+      <div class="agent-row">
+        <div><div class="name">product-discovery</div><div class="writes">crea NEED, ASSUM, QUES, RISK</div></div>
+        <div class="desc">Enmarca el problema. No investiga por ti &mdash; si no hay evidencia real, todo queda en <code>hypothesis</code>, sin excepción.</div>
+        <div class="count"><b>5 / 5</b>reglas forzadas / en el modelo</div>
+      </div>
+      <div class="agent-row">
+        <div><div class="name">product-manager</div><div class="writes">crea OBJ, GOAL, KPI, FEAT, US</div></div>
+        <div class="desc">Se niega a escribir estrategia si <code>NEED</code> está vacío. No inventa una cifra de KPI que no pueda justificar.</div>
+        <div class="count"><b>5 / 4</b>reglas forzadas / en el modelo</div>
+      </div>
+      <div class="agent-row">
+        <div><div class="name">system-analyst</div><div class="writes">crea TASK, DEC, RISK</div></div>
+        <div class="desc">Traduce historias aceptadas en tareas. Registra las decisiones técnicas en vez de enterrarlas en una descripción.</div>
+        <div class="count"><b>4 / 3</b>reglas forzadas / en el modelo</div>
+      </div>
+      <div class="agent-row">
+        <div><div class="name">product-critic</div><div class="writes">no crea nada &mdash; lista vacía</div></div>
+        <div class="desc">Su whitelist de escritura está vacía a propósito. Solo puede señalar lo que ya existe.</div>
+        <div class="count"><b>3 / 4</b>reglas forzadas / en el modelo</div>
+      </div>
+    </div>
+
+    <div class="proof">
+      <pre><span class="c">$ product node new FEAT --title "Split Bill" --agent product-discovery
+</span><span class="r">Agent 'product-discovery' may not create a FEAT node.
+Its contract permits: NEED, ASSUM, QUES, RISK.</span>
+<span class="c">$ echo $?</span>
+4</pre>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">Lo que no hace</p>
+    <h2>v0.1, sin maquillaje</h2>
+
+    <div class="facts">
+      <div class="col">
+        <h4>Sí funciona hoy</h4>
+        <ul>
+          <li><b>product why / check / status / context</b> &mdash; cero llamadas a un modelo</li>
+          <li><b>4 agentes</b> compilados a subagentes + slash commands</li>
+          <li><b>15 reglas de validación</b>, cada una con su fixture</li>
+          <li><b>77 tests</b>, node --test nativo</li>
+          <li><b>7 escenarios adversariales</b> contra inyección e invención</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Todavía no</h4>
+        <ul>
+          <li>Interfaz gráfica &mdash; es CLI + Markdown a propósito</li>
+          <li>Publicado en npm &mdash; instálalo desde el código fuente</li>
+          <li>Adaptador para Codex, Cursor o Gemini CLI &mdash; el contrato ya es neutral</li>
+          <li><code>DEC</code> antes de que exista una <code>US</code> aceptada</li>
+          <li>Roadmap, prioritización, personas, analytics &mdash; excluidos de v0.1</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      MIT &middot; <code>packages/core</code> nunca llama a un modelo ni toca la red &mdash;
+      verificado con un test de arquitectura, no con una promesa. La documentación completa de
+      las cuatro fases de diseño vive en <code>docs/</code> dentro del repo.
+    </p>
+    <p class="fine">Esta página es una foto fija, escrita a mano a partir del estado real del repo el 16 sep 2026 &mdash; no se regenera sola.</p>
+  </footer>
+
+</div>

@@ -19,6 +19,18 @@
   * { box-sizing: border-box; }
   ::selection { background: var(--amber-wash); color: var(--ink); }
 
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  section[id] { scroll-margin-top: 32px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+
   body {
     margin: 0;
     background: var(--bg);
@@ -89,11 +101,13 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    transition: transform 160ms ease-out, border-color 160ms ease-out, filter 160ms ease-out;
   }
 
   .btn.primary { background: var(--amber); border-color: var(--amber); color: #1B1508; }
   .btn:hover { border-color: var(--amber); }
   .btn.primary:hover { filter: brightness(1.08); }
+  .btn:active { transform: scale(0.97); }
 
   /* ---------- terminal panel ---------- */
 
@@ -194,12 +208,37 @@
   }
   .steps .step:last-child { border-bottom: 1px solid var(--line); }
 
+  @media (prefers-reduced-motion: no-preference) {
+    .step {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 420ms ease-out, transform 420ms ease-out;
+    }
+    .step.in-view { opacity: 1; transform: none; }
+
+    .hero-anim {
+      opacity: 0;
+      transform: translateY(8px);
+      animation: reveal 480ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    }
+    .hero-anim:nth-child(1) { animation-delay: 0ms; }
+    .hero-anim:nth-child(2) { animation-delay: 70ms; }
+    .hero-anim:nth-child(3) { animation-delay: 140ms; }
+    .hero-anim:nth-child(4) { animation-delay: 210ms; }
+    .hero-anim:nth-child(5) { animation-delay: 280ms; }
+
+    @keyframes reveal {
+      to { opacity: 1; transform: none; }
+    }
+  }
+
   .step .n {
     font-family: "Fraunces", serif;
     font-weight: 600;
     font-size: 22px;
     color: var(--amber);
     line-height: 1.4;
+    font-variant-numeric: tabular-nums;
   }
 
   .step h3 {
@@ -226,6 +265,42 @@
   }
 
   .step pre.cmd .c { color: var(--dim); }
+
+  /* ---------- copy-to-clipboard ---------- */
+
+  .step pre.cmd, .term pre { position: relative; padding-right: 68px; }
+
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--dim);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 5px 9px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 160ms ease-out, border-color 160ms ease-out, color 160ms ease-out;
+  }
+
+  .step pre.cmd:hover .copy-btn,
+  .term pre:hover .copy-btn,
+  .copy-btn:focus-visible {
+    opacity: 1;
+  }
+
+  .copy-btn:hover { border-color: var(--amber); color: var(--ink); }
+  .copy-btn:active { transform: scale(0.96); }
+  .copy-btn[data-copied] { color: var(--green); border-color: var(--green); opacity: 1; }
+
+  @media (hover: none) and (pointer: coarse) {
+    .copy-btn { opacity: 1; }
+  }
 
   .prereq {
     border: 1px solid var(--amber);
@@ -362,20 +437,20 @@
 <div class="wrap">
 
   <div class="hero">
-    <p class="eyebrow">Traceability layer &middot; open source</p>
-    <h1>De la idea a producción, <em>sin perder el porqué</em></h1>
-    <p class="lede">
+    <p class="eyebrow hero-anim">Traceability layer &middot; open source</p>
+    <h1 class="hero-anim">De la idea a producción, <em>sin perder el porqué</em></h1>
+    <p class="lede hero-anim">
       <b>AI Product OS</b> no genera PRDs. Convierte cada objetivo, necesidad, feature,
       historia y tarea en un nodo con ID, enlazado a los nodos de los que depende &mdash;
       para que <code style="font-size:13px">product why US-014</code> te diga en un segundo
       por qué existe algo, y si esa razón todavía descansa en un supuesto sin validar.
     </p>
-    <div class="cta-row">
+    <div class="cta-row hero-anim">
       <a class="btn primary" href="#instalar">Instalar &rarr;</a>
       <a class="btn" href="#agentes">Ver los 4 agentes</a>
     </div>
 
-    <div class="term">
+    <div class="term hero-anim">
       <div class="bar"><span class="dot"></span> product why TASK-001 &middot; salida real, sin editar</div>
       <pre><span class="prompt">TASK-001</span>  Implement per-participant payment intents  [accepted]
 └─ derives_from <span class="id">US-001</span>  Allow customers to split payment  [accepted]
@@ -739,3 +814,107 @@ Its contract permits: NEED, ASSUM, QUES, RISK.</span>
   </footer>
 
 </div>
+
+<script>
+  // Copy-to-clipboard on every command/terminal block. Feedback via label swap,
+  // not a toast — the block itself is the context, no need for a second element.
+  document.querySelectorAll('.step pre.cmd, .term pre').forEach((pre) => {
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.type = 'button';
+    btn.textContent = 'Copiar';
+    btn.setAttribute('aria-label', 'Copiar comando');
+    const flash = (label, ok) => {
+      btn.textContent = label;
+      if (ok) btn.setAttribute('data-copied', ''); else btn.setAttribute('data-error', '');
+      setTimeout(() => {
+        btn.textContent = 'Copiar';
+        btn.removeAttribute('data-copied');
+        btn.removeAttribute('data-error');
+      }, 1400);
+    };
+    btn.addEventListener('click', () => {
+      const text = pre.innerText.replace(/\n(Copiar|Copiado|Error)$/, '');
+      navigator.clipboard.writeText(text).then(
+        () => flash('Copiado', true),
+        () => {
+          // Clipboard API blocked (older browser, denied permission, insecure
+          // context) — fall back to the legacy selection-based copy instead
+          // of failing silently. A button that does nothing on click is
+          // worse than not having the button. Uses an off-screen textarea
+          // rather than selecting `pre` directly, so the button's own label
+          // never ends up inside the copied text.
+          try {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            const worked = document.execCommand('copy');
+            document.body.removeChild(ta);
+            flash(worked ? 'Copiado' : 'Error', worked);
+          } catch {
+            flash('Error', false);
+          }
+        },
+      );
+    });
+    pre.appendChild(btn);
+  });
+
+  // Reveal the numbered steps as they're actually reached — the content is a
+  // real sequence, so revealing it in reading order carries information.
+  //
+  // Safety net: a fast scroll, a direct #anchor jump, or Cmd/Ctrl-F jumping
+  // to text inside a later step can all move the viewport past a step
+  // without IntersectionObserver ever reporting it as intersecting — a
+  // single instant jump doesn't generate the intermediate frames the
+  // observer relies on. Content that can end up permanently invisible is a
+  // real defect, worse than no animation at all, so a scroll listener also
+  // reveals any step whose position says the user already reached it,
+  // independent of whether the observer ever saw the transition.
+  const steps = document.querySelectorAll('.step');
+
+  if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+    steps.forEach((el) => io.observe(el));
+
+    let ticking = false;
+    const sweep = () => {
+      ticking = false;
+      const vh = window.innerHeight;
+      steps.forEach((el) => {
+        if (!el.classList.contains('in-view') && el.getBoundingClientRect().top < vh) {
+          el.classList.add('in-view');
+          io.unobserve(el);
+        }
+      });
+    };
+    const onScroll = () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(sweep); }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('hashchange', sweep);
+    sweep(); // covers loading the page with a hash already in the URL
+
+    // Final backstop, independent of any event: some environments move the
+    // scroll position without ever dispatching a native `scroll` event.
+    // Cheap (11 elements) and self-terminating once nothing is left hidden.
+    const backstop = setInterval(() => {
+      sweep();
+      if (![...steps].some((el) => !el.classList.contains('in-view'))) {
+        clearInterval(backstop);
+      }
+    }, 400);
+  } else {
+    steps.forEach((el) => el.classList.add('in-view'));
+  }
+</script>

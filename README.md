@@ -207,3 +207,5 @@ run. See [CONTRIBUTING.md](CONTRIBUTING.md) and the
 ## License
 
 MIT
+
+<!-- test: verifying PR flow, branch protection, and CODEOWNERS review request. Safe to ignore/delete. -->

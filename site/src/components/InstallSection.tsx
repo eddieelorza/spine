@@ -191,8 +191,8 @@ export function InstallSection() {
                 className="cmd"
                 lines={[
                   <C># en cualquier carpeta, una sola vez</C>,
-                  'git clone <url> ai-product-os',
-                  'cd ai-product-os',
+                  'git clone https://github.com/eddieelorza/spine.git',
+                  'cd spine',
                   'npm install',
                   'npm run build',
                   <>
@@ -206,8 +206,8 @@ export function InstallSection() {
                 className="cmd"
                 lines={[
                   <C># in any folder, once</C>,
-                  'git clone <url> ai-product-os',
-                  'cd ai-product-os',
+                  'git clone https://github.com/eddieelorza/spine.git',
+                  'cd spine',
                   'npm install',
                   'npm run build',
                   <>

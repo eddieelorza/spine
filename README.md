@@ -1,4 +1,4 @@
-# AI Product OS
+# Spine
 
 **From idea to production — without losing the why.**
 
@@ -153,7 +153,7 @@ and no change to the core.
 
 **Deliberately excluded from v0.1:** web UI, database, auth, teams, cloud sync, Jira/Linear
 integration, roadmap and prioritisation commands, personas, journeys, analytics events, and
-adapters for other coding agents. See `docs/phase-2-product-spec.md` §5 for the full list and
+adapters for other coding agents. See `design/phase-2-product-spec.md` §5 for the full list and
 the reasoning.
 
 **Known weak spot:** adopting an *existing* product with a backlog elsewhere. v0.1 makes you
@@ -184,9 +184,9 @@ whether the idea is true:
 
 | | |
 |---|---|
-| `docs/phase-1-analysis.md` | Concept, competitive landscape, risks, domain model |
-| `docs/phase-2-product-spec.md` | Vision, users, JTBD, PRD, metrics, roadmap |
-| `docs/phase-3-technical-design.md` | Architecture, schemas, rules, algorithms, testing |
+| `design/phase-1-analysis.md` | Concept, competitive landscape, risks, domain model |
+| `design/phase-2-product-spec.md` | Vision, users, JTBD, PRD, metrics, roadmap |
+| `design/phase-3-technical-design.md` | Architecture, schemas, rules, algorithms, testing |
 | `examples/splitpay/` | A complete worked workspace |
 | `spec/rules/rules.yaml` | The normative rule set |
 | `spec/agents/*.agent.md` | The agent contracts — tool-neutral source of truth |

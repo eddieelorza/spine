@@ -1,6 +1,11 @@
 # Spine
 
+[![CI](https://github.com/eddieelorza/spine/actions/workflows/ci.yml/badge.svg)](https://github.com/eddieelorza/spine/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 **From idea to production — without losing the why.**
+
+Landing page: https://eddieelorza.github.io/spine/
 
 A traceable reasoning layer that lives in your repo. Every task can explain the objective it
 serves — and tell you which parts of that reasoning were never actually validated.
@@ -192,6 +197,12 @@ whether the idea is true:
 | `spec/agents/*.agent.md` | The agent contracts — tool-neutral source of truth |
 | `adapters/claude-code/` | Generated. Do not edit; run `product agents build` |
 | `evals/` | Adversarial scenarios for the agents, and how to score them |
+
+## Contributing
+
+`main` is protected — changes land through a PR, a review, and a green CI
+run. See [CONTRIBUTING.md](CONTRIBUTING.md) and the
+[Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## License
 
